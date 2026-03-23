@@ -1,0 +1,25 @@
+{
+  "name": "Harmonic Resonance Lexicon",
+  "short_name": "Night-Reader",
+  "description": "A digital hearth for the hours between 1800 and dawn — 362 entries of the Harmonic Resonance Lexicon",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#09051a",
+  "theme_color": "#09051a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
