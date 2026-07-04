@@ -171,30 +171,30 @@ button { cursor:pointer; border:none; border-radius:var(--r); font-family:Georgi
 <header>
   <h1>✦ Harmonic Resonance Lexicon ✦</h1>
   <p>Night-Reader · a digital hearth for the hours between 1800 and dawn</p>
-  <div id="entry-count"></div>
+  <div id="entry-count" aria-live="polite"></div>
 </header>
 
 <div class="controls">
-  <input id="search" type="text" placeholder="Search entries… title, word, feeling…" autocomplete="off">
+  <input id="search" type="text" placeholder="Search entries… title, word, feeling…" autocomplete="off" aria-label="Search entries">
   <div class="btn-row">
     <button id="btn-random">✦ Random Resonance</button>
-    <button id="btn-embers">☽ Pocket Embers</button>
+    <button id="btn-embers" aria-pressed="false">☽ Pocket Embers</button>
   </div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" data-layer="all">All · <span id="cnt-all"></span></button>
-  <button class="tab" data-layer="bridge">Whispering Bridge · <span id="cnt-bridge"></span></button>
-  <button class="tab" data-layer="field">Resonant Field · <span id="cnt-field"></span></button>
-  <button class="tab" data-layer="scroll">Living Scrolls · <span id="cnt-scroll"></span></button>
+<div class="tabs" role="tablist" aria-label="Filter by layer">
+  <button class="tab active" data-layer="all" role="tab" aria-selected="true">All · <span id="cnt-all"></span></button>
+  <button class="tab" data-layer="bridge" role="tab" aria-selected="false">Whispering Bridge · <span id="cnt-bridge"></span></button>
+  <button class="tab" data-layer="field" role="tab" aria-selected="false">Resonant Field · <span id="cnt-field"></span></button>
+  <button class="tab" data-layer="scroll" role="tab" aria-selected="false">Living Scrolls · <span id="cnt-scroll"></span></button>
 </div>
 
 <div id="cards"></div>
-<div id="empty">No entries found in this resonance field.</div>
+<div id="empty" aria-live="polite">No entries found in this resonance field.</div>
 
-<div id="spotlight">
+<div id="spotlight" role="dialog" aria-modal="true" aria-label="Entry spotlight">
   <div id="sp-card">
-    <button id="sp-close">✕</button>
+    <button id="sp-close" aria-label="Close spotlight">✕</button>
     <div id="sp-content"></div>
     <div class="sp-foot">
       <span id="sp-ember"></span>
@@ -227,7 +227,7 @@ function cardHtml(e){
       <div class="card-meta">
         <span class="badge">${layerName(e.layer)}</span>
         ${colBadge(e)}
-        <button class="ember-btn${lit?' lit':''}" data-num="${e.number}">${lit?'☽':'☾'}</button>
+        <button class="ember-btn${lit?' lit':''}" data-num="${e.number}" aria-pressed="${lit}" aria-label="${lit?'Kindled':'Kindle'} entry #${e.number}">${lit?'☽':'☾'}</button>
       </div>
     </div>
     ${e.definition?`<div class="card-def">"${esc(e.definition)}"</div>`:''}    ${e.expression?`<div class="card-expr">Expression: ${esc(e.expression)}</div>`:''}    ${e.body&&!shortBody?`<div class="card-body">${esc(e.body)}</div>`:''}
@@ -276,9 +276,10 @@ function toggleEmber(num){
 
 // Tabs
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active'); layer=t.dataset.layer;
+  document.querySelectorAll('.tab').forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+  t.classList.add('active'); t.setAttribute('aria-selected','true'); layer=t.dataset.layer;
   showEmbers=false; document.getElementById('btn-embers').classList.remove('active');
+  document.getElementById('btn-embers').setAttribute('aria-pressed','false');
   render();
 }));
 
@@ -290,6 +291,7 @@ document.getElementById('cards').addEventListener('click',e=>{
   const btn=e.target.closest('.ember-btn'); if(!btn) return;
   const num=btn.dataset.num, lit=toggleEmber(num); save();
   btn.classList.toggle('lit',lit); btn.textContent=lit?'☽':'☾';
+  btn.setAttribute('aria-pressed',lit); btn.setAttribute('aria-label',(lit?'Kindled':'Kindle')+' entry #'+num);
   if(showEmbers) render();
 });
 
@@ -297,8 +299,9 @@ document.getElementById('cards').addEventListener('click',e=>{
 document.getElementById('btn-embers').addEventListener('click',()=>{
   showEmbers=!showEmbers;
   document.getElementById('btn-embers').classList.toggle('active',showEmbers);
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  if(!showEmbers) { document.querySelector('.tab[data-layer=all]').classList.add('active'); layer='all'; }
+  document.getElementById('btn-embers').setAttribute('aria-pressed',showEmbers);
+  document.querySelectorAll('.tab').forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+  if(!showEmbers) { const allTab=document.querySelector('.tab[data-layer=all]'); allTab.classList.add('active'); allTab.setAttribute('aria-selected','true'); layer='all'; }
   render();
 });
 
