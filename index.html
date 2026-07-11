@@ -307,12 +307,19 @@ document.getElementById('btn-embers').addEventListener('click',()=>{
 
 // Spotlight
 let spEntry=null;
+let spTrigger=null;
 function openSpotlight(){
+  spTrigger=document.activeElement;
   const p=pool().length?pool():ENTRIES;
   spEntry=p[Math.floor(Math.random()*p.length)];
   document.getElementById('sp-content').innerHTML=spHtml(spEntry);
   refreshSpEmber();
   document.getElementById('spotlight').classList.add('open');
+  document.getElementById('sp-close').focus();
+}
+function closeSpotlight(){
+  document.getElementById('spotlight').classList.remove('open');
+  if(spTrigger) spTrigger.focus();
 }
 function refreshSpEmber(){
   if(!spEntry) return;
@@ -326,9 +333,14 @@ function refreshSpEmber(){
 }
 document.getElementById('btn-random').addEventListener('click',openSpotlight);
 document.getElementById('btn-again').addEventListener('click',openSpotlight);
-document.getElementById('sp-close').addEventListener('click',()=>document.getElementById('spotlight').classList.remove('open'));
+document.getElementById('sp-close').addEventListener('click',closeSpotlight);
 document.getElementById('spotlight').addEventListener('click',e=>{
-  if(e.target===document.getElementById('spotlight')) document.getElementById('spotlight').classList.remove('open');
+  if(e.target===document.getElementById('spotlight')) closeSpotlight();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && document.getElementById('spotlight').classList.contains('open')){
+    closeSpotlight();
+  }
 });
 
 updateCounts(); render();
