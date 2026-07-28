@@ -325,7 +325,7 @@ function refreshSpEmber(){
   if(!spEntry) return;
   const lit=embers.has(String(spEntry.number));
   document.getElementById('sp-ember').innerHTML=
-    `<button id="sp-emb-btn" class="ember-btn${lit?' lit':''}" style="font-size:1.3rem">${lit?'☽ Kindled':'☾ Kindle'}</button>`;
+    `<button id="sp-emb-btn" class="ember-btn${lit?' lit':''}" style="font-size:1.3rem" aria-pressed="${lit}" aria-label="${lit?'Kindled':'Kindle'} entry #${spEntry.number}">${lit?'☽ Kindled':'☾ Kindle'}</button>`;
   document.getElementById('sp-emb-btn').onclick=()=>{
     const now=toggleEmber(String(spEntry.number)); save();
     refreshSpEmber(); render();
