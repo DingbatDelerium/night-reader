@@ -338,8 +338,15 @@ document.getElementById('spotlight').addEventListener('click',e=>{
   if(e.target===document.getElementById('spotlight')) closeSpotlight();
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape' && document.getElementById('spotlight').classList.contains('open')){
-    closeSpotlight();
+  const modal=document.getElementById('spotlight');
+  if(!modal.classList.contains('open')) return;
+  if(e.key==='Escape'){ closeSpotlight(); return; }
+  if(e.key==='Tab'){
+    const focusable=modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if(!focusable.length) return;
+    const first=focusable[0], last=focusable[focusable.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
   }
 });
 
