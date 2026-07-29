@@ -162,6 +162,7 @@ button { cursor:pointer; border:none; border-radius:var(--r); font-family:Georgi
   text-align:center; color:var(--muted); font-style:italic;
   padding:50px 20px; display:none;
 }
+body.modal-open { overflow:hidden; }
 ::-webkit-scrollbar { width:5px; }
 ::-webkit-scrollbar-track { background:var(--bg); }
 ::-webkit-scrollbar-thumb { background:#2a1a50; border-radius:3px; }
@@ -315,10 +316,12 @@ function openSpotlight(){
   document.getElementById('sp-content').innerHTML=spHtml(spEntry);
   refreshSpEmber();
   document.getElementById('spotlight').classList.add('open');
+  document.body.classList.add('modal-open');
   document.getElementById('sp-close').focus();
 }
 function closeSpotlight(){
   document.getElementById('spotlight').classList.remove('open');
+  document.body.classList.remove('modal-open');
   if(spTrigger) spTrigger.focus();
 }
 function refreshSpEmber(){
