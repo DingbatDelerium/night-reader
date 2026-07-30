@@ -184,10 +184,10 @@ body.modal-open { overflow:hidden; }
 </div>
 
 <div class="tabs" role="tablist" aria-label="Filter by layer">
-  <button class="tab active" data-layer="all" role="tab" aria-selected="true">All · <span id="cnt-all"></span></button>
-  <button class="tab" data-layer="bridge" role="tab" aria-selected="false">Whispering Bridge · <span id="cnt-bridge"></span></button>
-  <button class="tab" data-layer="field" role="tab" aria-selected="false">Resonant Field · <span id="cnt-field"></span></button>
-  <button class="tab" data-layer="scroll" role="tab" aria-selected="false">Living Scrolls · <span id="cnt-scroll"></span></button>
+  <button class="tab active" data-layer="all" role="tab" aria-selected="true" tabindex="0">All · <span id="cnt-all"></span></button>
+  <button class="tab" data-layer="bridge" role="tab" aria-selected="false" tabindex="-1">Whispering Bridge · <span id="cnt-bridge"></span></button>
+  <button class="tab" data-layer="field" role="tab" aria-selected="false" tabindex="-1">Resonant Field · <span id="cnt-field"></span></button>
+  <button class="tab" data-layer="scroll" role="tab" aria-selected="false" tabindex="-1">Living Scrolls · <span id="cnt-scroll"></span></button>
 </div>
 
 <div id="cards"></div>
@@ -276,13 +276,28 @@ function toggleEmber(num){
 }
 
 // Tabs
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
-  t.classList.add('active'); t.setAttribute('aria-selected','true'); layer=t.dataset.layer;
+const tabs=[...document.querySelectorAll('.tab')];
+function activateTab(t){
+  tabs.forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); x.setAttribute('tabindex','-1'); });
+  t.classList.add('active'); t.setAttribute('aria-selected','true'); t.setAttribute('tabindex','0'); layer=t.dataset.layer;
   showEmbers=false; document.getElementById('btn-embers').classList.remove('active');
   document.getElementById('btn-embers').setAttribute('aria-pressed','false');
   render();
-}));
+}
+tabs.forEach(t=>t.addEventListener('click',()=>activateTab(t)));
+document.querySelector('.tabs').addEventListener('keydown',e=>{
+  const i=tabs.indexOf(document.activeElement);
+  if(i===-1) return;
+  let next;
+  if(e.key==='ArrowRight') next=(i+1)%tabs.length;
+  else if(e.key==='ArrowLeft') next=(i-1+tabs.length)%tabs.length;
+  else if(e.key==='Home') next=0;
+  else if(e.key==='End') next=tabs.length-1;
+  else return;
+  e.preventDefault();
+  tabs[next].focus();
+  activateTab(tabs[next]);
+});
 
 // Search
 document.getElementById('search').addEventListener('input',e=>{ query=e.target.value.trim(); render(); });
@@ -301,8 +316,10 @@ document.getElementById('btn-embers').addEventListener('click',()=>{
   showEmbers=!showEmbers;
   document.getElementById('btn-embers').classList.toggle('active',showEmbers);
   document.getElementById('btn-embers').setAttribute('aria-pressed',showEmbers);
-  document.querySelectorAll('.tab').forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
-  if(!showEmbers) { const allTab=document.querySelector('.tab[data-layer=all]'); allTab.classList.add('active'); allTab.setAttribute('aria-selected','true'); layer='all'; }
+  tabs.forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); x.setAttribute('tabindex','-1'); });
+  const allTab=document.querySelector('.tab[data-layer=all]');
+  allTab.setAttribute('tabindex','0');
+  if(!showEmbers) { allTab.classList.add('active'); allTab.setAttribute('aria-selected','true'); layer='all'; }
   render();
 });
 
