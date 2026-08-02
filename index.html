@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Night-Reader · Harmonic Resonance Lexicon</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#09051a">
@@ -31,10 +31,10 @@
 body {
   background:var(--bg); color:var(--text);
   font-family:Georgia,'Times New Roman',serif;
-  min-height:100vh; padding-bottom:80px;
+  min-height:100vh; padding-bottom:calc(80px + env(safe-area-inset-bottom));
 }
 header {
-  text-align:center; padding:36px 20px 18px;
+  text-align:center; padding:calc(36px + env(safe-area-inset-top)) 20px 18px;
   border-bottom:1px solid #1e1240;
 }
 header h1 {
