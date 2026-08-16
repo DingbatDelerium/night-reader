@@ -258,7 +258,13 @@ function pool(){
 function render(){
   const list=pool();
   const c=document.getElementById('cards'), em=document.getElementById('empty');
-  if(!list.length){ c.innerHTML=''; em.style.display='block'; }
+  if(!list.length){
+    c.innerHTML='';
+    em.textContent = showEmbers
+      ? 'No embers kindled yet — tap ☾ on an entry to keep it here.'
+      : 'No entries found in this resonance field.';
+    em.style.display='block';
+  }
   else { em.style.display='none'; c.innerHTML=list.map(cardHtml).join(''); }
   const lbl = showEmbers?`${list.length} ember${list.length!==1?'s':''} kindled`
                         :`${list.length} of ${ENTRIES.length} entries`;
