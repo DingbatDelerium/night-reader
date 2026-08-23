@@ -326,7 +326,8 @@ document.getElementById('btn-embers').addEventListener('click',()=>{
   tabs.forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); x.setAttribute('tabindex','-1'); });
   const allTab=document.querySelector('.tab[data-layer=all]');
   allTab.setAttribute('tabindex','0');
-  if(!showEmbers) { allTab.classList.add('active'); allTab.setAttribute('aria-selected','true'); layer='all'; }
+  layer='all';
+  if(!showEmbers) { allTab.classList.add('active'); allTab.setAttribute('aria-selected','true'); }
   render();
 });
 
