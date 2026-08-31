@@ -337,7 +337,8 @@ let spTrigger=null;
 function openSpotlight(){
   spTrigger=document.activeElement;
   const p=pool().length?pool():ENTRIES;
-  spEntry=p[Math.floor(Math.random()*p.length)];
+  const choices = (spEntry && p.length>1) ? p.filter(e=>e!==spEntry) : p;
+  spEntry=choices[Math.floor(Math.random()*choices.length)];
   document.getElementById('sp-content').innerHTML=spHtml(spEntry);
   refreshSpEmber();
   document.getElementById('spotlight').classList.add('open');
