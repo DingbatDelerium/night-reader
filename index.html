@@ -169,6 +169,7 @@ body.modal-open { overflow:hidden; }
 </style>
 </head>
 <body>
+<div id="app">
 <header>
   <h1>✦ Harmonic Resonance Lexicon ✦</h1>
   <p>Night-Reader · a digital hearth for the hours between 1800 and dawn</p>
@@ -192,6 +193,7 @@ body.modal-open { overflow:hidden; }
 
 <div id="cards"></div>
 <div id="empty" aria-live="polite">No entries found in this resonance field.</div>
+</div>
 
 <div id="spotlight" role="dialog" aria-modal="true" aria-label="Entry spotlight">
   <div id="sp-card">
@@ -343,11 +345,15 @@ function openSpotlight(){
   refreshSpEmber();
   document.getElementById('spotlight').classList.add('open');
   document.body.classList.add('modal-open');
+  document.getElementById('app').setAttribute('inert','');
+  document.getElementById('app').setAttribute('aria-hidden','true');
   document.getElementById('sp-close').focus();
 }
 function closeSpotlight(){
   document.getElementById('spotlight').classList.remove('open');
   document.body.classList.remove('modal-open');
+  document.getElementById('app').removeAttribute('inert');
+  document.getElementById('app').removeAttribute('aria-hidden');
   if(spTrigger) spTrigger.focus();
 }
 function refreshSpEmber(){
