@@ -185,13 +185,13 @@ body.modal-open { overflow:hidden; }
 </div>
 
 <div class="tabs" role="tablist" aria-label="Filter by layer">
-  <button class="tab active" data-layer="all" role="tab" aria-selected="true" tabindex="0">All · <span id="cnt-all"></span></button>
-  <button class="tab" data-layer="bridge" role="tab" aria-selected="false" tabindex="-1">Whispering Bridge · <span id="cnt-bridge"></span></button>
-  <button class="tab" data-layer="field" role="tab" aria-selected="false" tabindex="-1">Resonant Field · <span id="cnt-field"></span></button>
-  <button class="tab" data-layer="scroll" role="tab" aria-selected="false" tabindex="-1">Living Scrolls · <span id="cnt-scroll"></span></button>
+  <button class="tab active" data-layer="all" role="tab" aria-selected="true" tabindex="0" aria-controls="cards">All · <span id="cnt-all"></span></button>
+  <button class="tab" data-layer="bridge" role="tab" aria-selected="false" tabindex="-1" aria-controls="cards">Whispering Bridge · <span id="cnt-bridge"></span></button>
+  <button class="tab" data-layer="field" role="tab" aria-selected="false" tabindex="-1" aria-controls="cards">Resonant Field · <span id="cnt-field"></span></button>
+  <button class="tab" data-layer="scroll" role="tab" aria-selected="false" tabindex="-1" aria-controls="cards">Living Scrolls · <span id="cnt-scroll"></span></button>
 </div>
 
-<div id="cards"></div>
+<div id="cards" role="tabpanel" aria-label="Lexicon entries"></div>
 <div id="empty" aria-live="polite">No entries found in this resonance field.</div>
 </div>
 
