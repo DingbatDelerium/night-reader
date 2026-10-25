@@ -373,6 +373,7 @@ function refreshSpEmber(){
   document.getElementById('sp-emb-btn').onclick=()=>{
     const now=toggleEmber(String(spEntry.number)); save();
     refreshSpEmber(); render();
+    document.getElementById('sp-emb-btn').focus(); // button was rebuilt; keep keyboard focus on it
   };
 }
 document.getElementById('btn-random').addEventListener('click',openSpotlight);
