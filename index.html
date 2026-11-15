@@ -186,7 +186,7 @@ body.modal-open { overflow:hidden; }
 </header>
 
 <div class="controls">
-  <input id="search" type="text" placeholder="Search entries… title, word, feeling…" autocomplete="off" aria-label="Search entries">
+  <input id="search" type="text" placeholder="Search entries… title, number, word, feeling…" autocomplete="off" aria-label="Search entries">
   <div class="btn-row">
     <button id="btn-random">✦ Random Resonance</button>
     <button id="btn-embers" aria-pressed="false">☽ Pocket Embers</button>
@@ -260,7 +260,12 @@ function pool(){
   let list=ENTRIES;
   if(showEmbers) list=list.filter(e=>embers.has(String(e.number)));
   if(layer!=='all') list=list.filter(e=>e.layer===layer);
-  if(query){ const q=query.toLowerCase(); list=list.filter(e=>
+  if(query){ const q=query.toLowerCase();
+    // Every card shows its "#number", so a bare number (or "#999") should
+    // find that entry. Matched exactly, to keep "1" from pulling in #100 etc.
+    const num=/^#?\d+$/.test(q) ? q.replace('#','') : null;
+    list=list.filter(e=>
+    (num!==null&&String(e.number)===num)||
     (e.title||'').toLowerCase().includes(q)||(e.body||'').toLowerCase().includes(q)||
     (e.definition||'').toLowerCase().includes(q)); }
   return list;
