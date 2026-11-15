@@ -346,7 +346,8 @@ document.getElementById('btn-embers').addEventListener('click',()=>{
 let spEntry=null;
 let spTrigger=null;
 function openSpotlight(){
-  spTrigger=document.activeElement;
+  // Only remember the opener on first open; "Another" re-runs this while the modal is already up.
+  if(!document.getElementById('spotlight').classList.contains('open')) spTrigger=document.activeElement;
   const p=pool().length?pool():ENTRIES;
   const choices = (spEntry && p.length>1) ? p.filter(e=>e!==spEntry) : p;
   spEntry=choices[Math.floor(Math.random()*choices.length)];
