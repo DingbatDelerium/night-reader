@@ -359,6 +359,11 @@ function openSpotlight(){
   document.getElementById('sp-content').innerHTML=spHtml(spEntry);
   refreshSpEmber();
   document.getElementById('spotlight').classList.add('open');
+  // Start every entry at its title. The card is what scrolls, and it keeps its
+  // offset when the text is swapped, so "Another" would otherwise drop you
+  // partway down the next entry. Must come after .open: scrollTop does nothing
+  // while the modal is still display:none.
+  document.getElementById('sp-card').scrollTop=0;
   document.body.classList.add('modal-open');
   document.getElementById('app').setAttribute('inert','');
   document.getElementById('app').setAttribute('aria-hidden','true');
